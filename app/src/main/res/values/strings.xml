@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MakanCuy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_menu_home">For You</string>
+    <string name="title_menu_cart">Your Cart</string>
+    <string name="title_menu_profile">Profile</string>
+</resources>
