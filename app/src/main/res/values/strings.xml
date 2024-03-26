@@ -1,7 +1,20 @@
 <resources>
     <string name="app_name">MakanCuy</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_tittle_banner">DISKON 40%</string>
+    <string name="text_desc_banner">Pesan Makanan Lewat Aplikasi dan Dapatkan Diskon</string>
+    <string name="text_name">Hi. Gustian!</string>
+    <string name="text_greetings">Mau Makan Apa Hari Ini?</string>
+    <string name="text_tittle_categories">Categories</string>
+    <string name="text_see_all">See All..</string>
+    <string name="text_categori_1">Nasi</string>
+    <string name="text_categori_2">Mie</string>
+    <string name="text_categori_3">Snack</string>
+    <string name="text_categori_4">Minum</string>
+    <string name="text_tittle_list">List Menu Makanan</string>
+    <string name="text_menu_1">Ayam Goreng</string>
+    <string name="amount_placeholder">%d</string>
+    <string name="text_add_to_cart">Tambahkan ke Keranjang - %1$s</string>
     <string name="title_menu_home">For You</string>
     <string name="title_menu_cart">Your Cart</string>
     <string name="title_menu_profile">Profile</string>

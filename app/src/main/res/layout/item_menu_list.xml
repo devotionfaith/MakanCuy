@@ -58,7 +58,7 @@
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="@color/grey"
+        android:textColor="@color/md_theme_light_onSecondaryContainer"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@id/tv_menu_name"
         app:layout_constraintStart_toEndOf="@id/cv_menu_image"
