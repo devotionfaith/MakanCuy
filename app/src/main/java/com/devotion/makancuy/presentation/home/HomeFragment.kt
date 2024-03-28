@@ -29,10 +29,8 @@ import com.devotion.makancuy.utils.GenericViewModelFactory
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private var isUsingGridMode: Boolean = true
     private var menuAdapter: MenuAdapter? = null
     private var categoryAdapter: CategoryAdapter? = null
-
     private val viewModel: HomeViewModel by viewModels {
         val categoryDataSource = DummyCategoryDataSource()
         val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
@@ -55,16 +53,21 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindMenuList(isUsingGridMode, viewModel.getMenu())
         bindCategory(viewModel.getCategory())
+        observeGridMode()
         setClickAction()
+    }
+
+    private fun observeGridMode() {
+        viewModel.isUsingGridMode.observe(viewLifecycleOwner){ isUsingGridMode->
+            setIcon(isUsingGridMode)
+            bindMenuList(isUsingGridMode, viewModel.getMenu())
+        }
     }
 
     private fun setClickAction() {
         binding.ivChangeLayout.setOnClickListener {
-            isUsingGridMode = !isUsingGridMode
-            setIcon(isUsingGridMode)
-            bindMenuList(isUsingGridMode, viewModel.getMenu())
+            viewModel.changeListMode()
         }
     }
 
