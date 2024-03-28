@@ -21,6 +21,7 @@ import com.devotion.makancuy.data.repository.MenuRepository
 import com.devotion.makancuy.data.repository.MenuRepositoryImpl
 import com.devotion.makancuy.databinding.FragmentCartBinding
 import com.devotion.makancuy.databinding.FragmentHomeBinding
+import com.devotion.makancuy.presentation.detailmenu.DetailMenuActivity
 import com.devotion.makancuy.presentation.home.adapter.CategoryAdapter
 import com.devotion.makancuy.presentation.home.adapter.MenuAdapter
 import com.devotion.makancuy.presentation.home.adapter.OnItemCLickedListener
@@ -87,7 +88,7 @@ class HomeFragment : Fragment() {
             listMode = listMode,
             listener = object : OnItemCLickedListener<Menu> {
                 override fun onItemClicked(item: Menu) {
-
+                    navigateToDetail(item)
                 }
             }
         )
@@ -96,6 +97,13 @@ class HomeFragment : Fragment() {
             layoutManager = GridLayoutManager(requireContext(), if (isUsingGrid) 2 else 1)
         }
         menuAdapter?.submitData(data)
+    }
+
+    private fun navigateToDetail(item: Menu) {
+        DetailMenuActivity.startActivity(
+            requireContext(),
+            item
+        )
     }
 
 }

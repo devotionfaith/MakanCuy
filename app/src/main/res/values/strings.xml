@@ -18,4 +18,6 @@
     <string name="title_menu_home">For You</string>
     <string name="title_menu_cart">Your Cart</string>
     <string name="title_menu_profile">Profile</string>
+    <string name="text_title_location">Lokasi</string>
+    <string name="text_amount">1</string>
 </resources>
