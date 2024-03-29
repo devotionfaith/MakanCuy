@@ -2,19 +2,24 @@ package com.devotion.makancuy.presentation.detailmenu
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.devotion.makancuy.R
+import com.devotion.makancuy.data.datasource.cart.CartDataSource
+import com.devotion.makancuy.data.datasource.cart.CartDatabaseDataSource
 import com.devotion.makancuy.data.model.Menu
+import com.devotion.makancuy.data.repository.CartRepository
+import com.devotion.makancuy.data.repository.CartRepositoryImpl
+import com.devotion.makancuy.data.source.local.database.AppDatabase
 import com.devotion.makancuy.databinding.ActivityDetailMenuBinding
-import com.devotion.makancuy.utils.fromCurrencyToDouble
+import com.devotion.makancuy.utils.GenericViewModelFactory
+import com.devotion.makancuy.utils.proceedWhen
 import com.devotion.makancuy.utils.toIndonesianFormat
 
 class DetailMenuActivity : AppCompatActivity() {
-    private var amount: Int = 1
-    private var location: String = "Dummy"
 
     companion object {
         const val EXTRAS_ITEM = "EXTRAS_DETAIL_DATA"
@@ -29,21 +34,40 @@ class DetailMenuActivity : AppCompatActivity() {
         ActivityDetailMenuBinding.inflate(layoutInflater)
     }
 
+    private val viewModel: DetailMenuViewModel by viewModels {
+        val db = AppDatabase.getInstance(this)
+        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
+        val rp: CartRepository = CartRepositoryImpl(ds)
+        GenericViewModelFactory.create(
+            DetailMenuViewModel(intent?.extras, rp)
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setOnClick()
         bindMenuDetail()
-        updateLayout(amount)
+        observeData()
         setContentView(binding.root)
+    }
+
+    private fun observeData() {
+        viewModel.priceLiveData.observe(this) {
+            binding.btnAddToCart.isEnabled = it != 0.0
+            binding.btnAddToCart.text = getString(R.string.text_add_to_cart, it.toIndonesianFormat())
+        }
+        viewModel.menuCountLiveData.observe(this) {
+            binding.tvAmount.text = it.toString()
+        }
     }
 
     private fun setOnClick() {
         binding.cvSubstract.setOnClickListener {
-            updateAmount(amount - 1)
+            viewModel.minus()
         }
 
         binding.cvAdd.setOnClickListener {
-            updateAmount(amount + 1)
+            viewModel.add()
         }
         binding.ivBack.setOnClickListener {
             finish()
@@ -51,35 +75,47 @@ class DetailMenuActivity : AppCompatActivity() {
         binding.tvLocationAddress.setOnClickListener {
             navigateToMaps()
         }
+        binding.btnAddToCart.setOnClickListener{
+            addMenuToCart()
+        }
+    }
+
+    private fun addMenuToCart() {
+        viewModel.addToCart().observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.text_adding_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                },
+                doOnError = {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.text_failed_add),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                doOnLoading = {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.text_loading),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
+        }
     }
 
     private fun navigateToMaps() {
-        val gmmIntentUri = Uri.parse(location)
-        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        startActivity(mapIntent)
+        startActivity(Intent(Intent.ACTION_VIEW, viewModel.getLocationUrl()))
     }
-
-    private fun updateAmount(currentAmount: Int) {
-        val newAmount = maxOf(0, currentAmount)
-        amount = newAmount
-        binding.tvAmount.text = newAmount.toString()
-        updateLayout(newAmount)
-        binding.btnAddToCart.isEnabled = newAmount != 0
-    }
-
-    private fun updateLayout(amount: Int) {
-        val price = binding.tvMenuPriceDetails.text.toString().fromCurrencyToDouble() ?: 0.0
-        val totalPrice = price * amount
-        val formattedTotalPrice = totalPrice.toIndonesianFormat()
-        val buttonText = getString(R.string.text_add_to_cart, formattedTotalPrice)
-        binding.btnAddToCart.text = buttonText
-    }
-
 
     private fun bindMenuDetail() {
         intent.extras?.getParcelable<Menu>(EXTRAS_ITEM)?.let {
-            location = it.locationUrl
-            binding.ivMenuImgDetails.load(it.imageurl) {
+            binding.ivMenuImgDetails.load(it.imageUrl) {
                 crossfade(true)
             }
             binding.tvMenuNameDetails.text = it.name

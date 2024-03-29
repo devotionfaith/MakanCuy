@@ -20,4 +20,12 @@
     <string name="title_menu_profile">Profile</string>
     <string name="text_title_location">Lokasi</string>
     <string name="text_amount">1</string>
+    <string name="text_title_notes">Catatan :</string>
+    <string name="text_title_shopping_cart">Shopping Cart</string>
+    <string name="text_notes_hint">\tTulis Disini</string>
+    <string name="text_title_total">Total Harga</string>
+    <string name="text_btn_check_out">Check Out</string>
+    <string name="text_adding_success">Cart Added successfully</string>
+    <string name="text_failed_add">Cart Failed to Add</string>
+    <string name="text_loading">Loading</string>
 </resources>
