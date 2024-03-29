@@ -1,25 +1,23 @@
 package com.devotion.makancuy.presentation.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devotion.makancuy.R
-import com.devotion.makancuy.data.datasource.category.CategoryDataSource
 import com.devotion.makancuy.data.datasource.category.DummyCategoryDataSource
 import com.devotion.makancuy.data.datasource.menu.DummyMenuDataSource
-import com.devotion.makancuy.data.datasource.menu.MenuDataSource
 import com.devotion.makancuy.data.model.Category
 import com.devotion.makancuy.data.model.Menu
 import com.devotion.makancuy.data.repository.CategoryRepository
 import com.devotion.makancuy.data.repository.CategoryRepositoryImpl
 import com.devotion.makancuy.data.repository.MenuRepository
 import com.devotion.makancuy.data.repository.MenuRepositoryImpl
-import com.devotion.makancuy.databinding.FragmentCartBinding
+import com.devotion.makancuy.data.source.local.pref.UserPreferenceImpl
 import com.devotion.makancuy.databinding.FragmentHomeBinding
 import com.devotion.makancuy.presentation.detailmenu.DetailMenuActivity
 import com.devotion.makancuy.presentation.home.adapter.CategoryAdapter
@@ -36,7 +34,8 @@ class HomeFragment : Fragment() {
         val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
         val menuDataSource = DummyMenuDataSource()
         val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
-        GenericViewModelFactory.create(HomeViewModel(categoryRepository,menuRepository))
+        val userPreference = UserPreferenceImpl(requireContext())
+        GenericViewModelFactory.create(HomeViewModel(categoryRepository,menuRepository,userPreference))
     }
 
     override fun onCreateView(
