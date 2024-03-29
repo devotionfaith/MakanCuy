@@ -52,6 +52,6 @@ class DetailMenuViewModel(
         return menu?.let {
             val quantity = menuCountLiveData.value ?: 0
             cartRepository.createCart(it, quantity).asLiveData(Dispatchers.IO)
-        } ?: liveData { emit(ResultWrapper.Error(IllegalStateException("menu not found"))) }
+        } ?: liveData { emit(ResultWrapper.Error(IllegalStateException("Menu not found"))) }
     }
 }
