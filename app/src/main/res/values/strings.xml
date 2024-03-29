@@ -29,7 +29,7 @@
     <string name="text_failed_add">Cart Failed to Add</string>
     <string name="text_loading">Loading</string>
     <string name="text_quantity">x8</string>
-    <string name="total_quantity">x%s\n</string>
+    <string name="total_quantity">x%s</string>
     <string name="text_cart_is_empty">Cart is Empty\n</string>
     <string name="text_checkout_header">Order Summary</string>
     <string name="text_payment_method">Payment Method</string>
