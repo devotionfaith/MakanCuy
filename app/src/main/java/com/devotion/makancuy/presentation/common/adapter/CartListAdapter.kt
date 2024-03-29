@@ -120,7 +120,7 @@ class CartCheckoutViewHolder(
                     item.itemQuantity.toString()
                 )
             tvMenuName.text = item.menuName
-            tvMenuPrice.text =  item.menuPrice.toIndonesianFormat()
+            tvMenuPrice.text = item.menuPrice.toIndonesianFormat()
         }
     }
 

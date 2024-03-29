@@ -2,7 +2,6 @@ package com.devotion.makancuy.presentation.checkout
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -13,9 +12,9 @@ import com.devotion.makancuy.data.repository.CartRepository
 import com.devotion.makancuy.data.repository.CartRepositoryImpl
 import com.devotion.makancuy.data.source.local.database.AppDatabase
 import com.devotion.makancuy.databinding.ActivityCheckoutBinding
-import com.devotion.makancuy.presentation.popup.PopupCheckoutActivity
 import com.devotion.makancuy.presentation.checkout.adapter.PriceListAdapter
 import com.devotion.makancuy.presentation.common.adapter.CartListAdapter
+import com.devotion.makancuy.presentation.popup.PopupCheckoutActivity
 import com.devotion.makancuy.utils.GenericViewModelFactory
 import com.devotion.makancuy.utils.proceedWhen
 import com.devotion.makancuy.utils.toIndonesianFormat

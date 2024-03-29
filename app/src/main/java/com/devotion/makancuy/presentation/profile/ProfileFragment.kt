@@ -1,15 +1,14 @@
 package com.devotion.makancuy.presentation.profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.devotion.makancuy.R
-import com.devotion.makancuy.databinding.FragmentCartBinding
 import com.devotion.makancuy.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -58,7 +57,7 @@ class ProfileFragment : Fragment() {
             binding.nameEditText.isEnabled = it
             binding.usernameEditText.isEnabled = it
         }
-        viewModel.buttonText.observe(viewLifecycleOwner){
+        viewModel.buttonText.observe(viewLifecycleOwner) {
             binding.btnEdit.text = it
         }
     }
