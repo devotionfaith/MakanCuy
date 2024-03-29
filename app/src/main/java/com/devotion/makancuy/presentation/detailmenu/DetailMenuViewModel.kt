@@ -11,7 +11,6 @@ import com.devotion.makancuy.data.model.Menu
 import com.devotion.makancuy.data.repository.CartRepository
 import com.devotion.makancuy.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
-import java.lang.IllegalStateException
 
 class DetailMenuViewModel(
     private val extras: Bundle?,
@@ -43,7 +42,7 @@ class DetailMenuViewModel(
         }
     }
 
-    fun getLocationUrl(): Uri?{
+    fun getLocationUrl(): Uri? {
         location = (menu?.locationUrl.orEmpty())
         return location?.let { Uri.parse(it) }
     }

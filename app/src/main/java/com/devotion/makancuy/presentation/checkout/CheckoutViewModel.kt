@@ -3,7 +3,6 @@ package com.devotion.makancuy.presentation.checkout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.devotion.makancuy.data.model.Cart
 import com.devotion.makancuy.data.repository.CartRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect

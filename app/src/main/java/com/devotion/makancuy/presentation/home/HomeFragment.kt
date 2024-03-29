@@ -35,7 +35,13 @@ class HomeFragment : Fragment() {
         val menuDataSource = DummyMenuDataSource()
         val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
         val userPreference = UserPreferenceImpl(requireContext())
-        GenericViewModelFactory.create(HomeViewModel(categoryRepository,menuRepository,userPreference))
+        GenericViewModelFactory.create(
+            HomeViewModel(
+                categoryRepository,
+                menuRepository,
+                userPreference
+            )
+        )
     }
 
     override fun onCreateView(
@@ -58,7 +64,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeGridMode() {
-        viewModel.isUsingGridMode.observe(viewLifecycleOwner){ isUsingGridMode->
+        viewModel.isUsingGridMode.observe(viewLifecycleOwner) { isUsingGridMode ->
             setIcon(isUsingGridMode)
             bindMenuList(isUsingGridMode, viewModel.getMenu())
         }

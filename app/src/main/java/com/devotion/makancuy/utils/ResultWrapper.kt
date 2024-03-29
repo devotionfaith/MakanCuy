@@ -13,7 +13,8 @@ sealed class ResultWrapper<T>(
 ) {
     class Success<T>(data: T) : ResultWrapper<T>(data)
 
-    class Error<T>(exception: Exception?, data: T? = null) : ResultWrapper<T>(data, exception = exception)
+    class Error<T>(exception: Exception?, data: T? = null) :
+        ResultWrapper<T>(data, exception = exception)
 
     class Empty<T>(data: T? = null) : ResultWrapper<T>(data)
 
