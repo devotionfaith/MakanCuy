@@ -1,11 +1,10 @@
 package com.devotion.makancuy.presentation.checkout
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.devotion.makancuy.R
 import com.devotion.makancuy.data.datasource.cart.CartDataSource
@@ -14,6 +13,7 @@ import com.devotion.makancuy.data.repository.CartRepository
 import com.devotion.makancuy.data.repository.CartRepositoryImpl
 import com.devotion.makancuy.data.source.local.database.AppDatabase
 import com.devotion.makancuy.databinding.ActivityCheckoutBinding
+import com.devotion.makancuy.presentation.popup.PopupCheckoutActivity
 import com.devotion.makancuy.presentation.checkout.adapter.PriceListAdapter
 import com.devotion.makancuy.presentation.common.adapter.CartListAdapter
 import com.devotion.makancuy.utils.GenericViewModelFactory
@@ -54,6 +54,14 @@ class CheckoutActivity : AppCompatActivity() {
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
+        binding.btnCheckout.setOnClickListener {
+            showPopup()
+            viewModel.deleteAllCart()
+        }
+    }
+
+    private fun showPopup() {
+        startActivity(Intent(this, PopupCheckoutActivity::class.java))
     }
 
     private fun setupList() {
@@ -70,6 +78,7 @@ class CheckoutActivity : AppCompatActivity() {
                 binding.layoutContent.root.isVisible = true
                 binding.layoutContent.rvCart.isVisible = true
                 binding.cvOrderAction.isVisible = true
+                binding.btnCheckout.isEnabled = true
                 result.payload?.let { (carts, priceItems, totalPrice) ->
                     adapter.submitData(carts)
                     binding.tvTotalPrice.text = totalPrice.toIndonesianFormat()
@@ -82,6 +91,7 @@ class CheckoutActivity : AppCompatActivity() {
                 binding.layoutContent.root.isVisible = false
                 binding.layoutContent.rvCart.isVisible = false
                 binding.cvOrderAction.isVisible = false
+                binding.btnCheckout.isEnabled = false
             }, doOnError = {
                 binding.layoutState.root.isVisible = true
                 binding.layoutState.pbLoading.isVisible = false

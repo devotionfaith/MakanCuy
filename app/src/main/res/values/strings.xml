@@ -28,15 +28,15 @@
     <string name="text_adding_success">Cart Added successfully</string>
     <string name="text_failed_add">Cart Failed to Add</string>
     <string name="text_loading">Loading</string>
-    <string name="text_quantity">8x</string>
-    <string name="total_quantity">s%x\n</string>
+    <string name="text_quantity">x8</string>
+    <string name="total_quantity">x%s\n</string>
     <string name="text_cart_is_empty">Cart is Empty\n</string>
     <string name="text_checkout_header">Order Summary</string>
     <string name="text_payment_method">Payment Method</string>
     <string name="text_cod">CoD</string>
     <string name="text_transfer">Transfer</string>
     <string name="text_delivery">Delivery</string>
-    <string name="text_pick_up">Pickk Up</string>
+    <string name="text_pick_up">Pick Up</string>
     <string name="text_delivery_method">Delivery method</string>
     <string name="shopping_summary">Order Summary</string>
     <string name="hint_name">Nama</string>
@@ -45,4 +45,6 @@
     <string name="text_hint_email">Email</string>
     <string name="text_email">rgusti530@gmail.com\n</string>
     <string name="text_edit">Edit</string>
+    <string name="text_success">PESANAN BERHASIL</string>
+    <string name="text_back_to_home">Kembali ke Home</string>
 </resources>

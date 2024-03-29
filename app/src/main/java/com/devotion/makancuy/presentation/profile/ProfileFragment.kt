@@ -22,7 +22,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -58,7 +57,9 @@ class ProfileFragment : Fragment() {
             binding.emailEditText.isEnabled = it
             binding.nameEditText.isEnabled = it
             binding.usernameEditText.isEnabled = it
-            binding.btnEdit.text = if (it) "Save" else "Edit"
+        }
+        viewModel.buttonText.observe(viewLifecycleOwner){
+            binding.btnEdit.text = it
         }
     }
 }

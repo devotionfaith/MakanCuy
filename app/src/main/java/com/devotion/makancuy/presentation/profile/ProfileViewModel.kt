@@ -16,9 +16,19 @@ class ProfileViewModel : ViewModel() {
     )
 
     val isEditMode = MutableLiveData(false)
+    val buttonText = MutableLiveData("Edit")
 
     fun changeEditMode() {
         val currentValue = isEditMode.value ?: false
         isEditMode.postValue(!currentValue)
+    }
+
+    fun getButtonText() {
+        val currentValue = isEditMode.value ?: false
+        return if (!currentValue) {
+            buttonText.postValue("Edit")
+        } else {
+            buttonText.postValue("Edit")
+        }
     }
 }
