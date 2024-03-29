@@ -39,4 +39,10 @@
     <string name="text_pick_up">Pickk Up</string>
     <string name="text_delivery_method">Delivery method</string>
     <string name="shopping_summary">Order Summary</string>
+    <string name="hint_name">Nama</string>
+    <string name="text_username">devotionfaith</string>
+    <string name="hint_username">Username</string>
+    <string name="text_hint_email">Email</string>
+    <string name="text_email">rgusti530@gmail.com\n</string>
+    <string name="text_edit">Edit</string>
 </resources>
