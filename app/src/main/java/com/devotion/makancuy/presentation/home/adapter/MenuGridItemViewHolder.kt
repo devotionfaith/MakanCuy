@@ -13,7 +13,7 @@ class MenuGridItemViewHolder(
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Menu> {
     override fun bind(item: Menu) {
         item.let {
-            binding.ivMenuImage.load(item.imageurl) {
+            binding.ivMenuImage.load(item.imageUrl) {
                 crossfade(true)
             }
             binding.tvMenuName.text = it.name
