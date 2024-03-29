@@ -65,7 +65,6 @@ class DetailMenuActivity : AppCompatActivity() {
         binding.cvSubstract.setOnClickListener {
             viewModel.minus()
         }
-
         binding.cvAdd.setOnClickListener {
             viewModel.add()
         }
