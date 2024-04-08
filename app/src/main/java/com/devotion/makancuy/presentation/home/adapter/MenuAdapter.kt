@@ -12,8 +12,8 @@ import com.devotion.makancuy.utils.ViewHolderBinder
 
 
 class MenuAdapter(
-    private val listener: OnItemCLickedListener<Menu>,
-    private val listMode: Int = MODE_GRID
+    private var listMode: Int,
+    private val itemClick: (Menu) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val MODE_LIST = 0
@@ -42,14 +42,14 @@ class MenuAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), listener
+            ), itemClick
         ) else {
             MenuListItemViewHolder(
                 ItemMenuListBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
-                ), listener
+                ), itemClick
             )
         }
     }
@@ -57,12 +57,13 @@ class MenuAdapter(
     override fun getItemCount(): Int = asyncDataDiffer.currentList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder !is ViewHolderBinder<*>) return
-        (holder as ViewHolderBinder<Menu>).bind(asyncDataDiffer.currentList[position])
+        when (holder) {
+            is MenuGridItemViewHolder -> holder.bind(asyncDataDiffer.currentList[position])
+            is MenuListItemViewHolder -> holder.bind(asyncDataDiffer.currentList[position])
+        }
     }
 
-}
-
-interface OnItemCLickedListener<T> {
-    fun onItemClicked(item: T)
+    fun updateListMode(newListMode: Int) {
+        listMode = newListMode
+    }
 }

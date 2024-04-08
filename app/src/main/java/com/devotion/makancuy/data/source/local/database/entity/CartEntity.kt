@@ -15,7 +15,9 @@ data class CartEntity(
     @ColumnInfo(name = "menu_img_url")
     var menuImgUrl: String? = null,
     @ColumnInfo(name = "menu_price")
-    var menuPrice: Double? = null,
+    var menuPrice: Int? = null,
+    @ColumnInfo(name = "menu_price_formatted")
+    var menuPriceFormatted: String? = null,
     @ColumnInfo(name = "item_quantity")
     var itemQuantity: Int? = null,
     @ColumnInfo(name = "item_notes")

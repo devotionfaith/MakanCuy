@@ -53,7 +53,7 @@ class DetailMenuActivity : AppCompatActivity() {
 
     private fun observeData() {
         viewModel.priceLiveData.observe(this) {
-            binding.btnAddToCart.isEnabled = it != 0.0
+            binding.btnAddToCart.isEnabled = it != 0
             binding.btnAddToCart.text =
                 getString(R.string.text_add_to_cart, it.toIndonesianFormat())
         }
@@ -119,7 +119,7 @@ class DetailMenuActivity : AppCompatActivity() {
                 crossfade(true)
             }
             binding.tvMenuNameDetails.text = it.name
-            binding.tvMenuPriceDetails.text = it.price.toIndonesianFormat()
+            binding.tvMenuPriceDetails.text = it.formattedprice
             binding.tvMenuDetails.text = it.details
             binding.tvLocationAddress.text = it.locationAddress
         }

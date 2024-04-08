@@ -7,7 +7,8 @@ import com.devotion.makancuy.databinding.ItemCategoryBinding
 import com.devotion.makancuy.utils.ViewHolderBinder
 
 class CategoryItemViewHolder(
-    private val binding: ItemCategoryBinding
+    private val binding: ItemCategoryBinding,
+    private val itemClick: (Category) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Category> {
     override fun bind(item: Category) {
         item.let {
@@ -15,6 +16,7 @@ class CategoryItemViewHolder(
                 crossfade(true)
             }
             binding.tvCategoryName.text = it.name
+            itemView.setOnClickListener{itemClick(item)}
         }
     }
 }
