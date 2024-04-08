@@ -3,9 +3,11 @@ package com.devotion.makancuy.presentation.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.devotion.makancuy.data.repository.CategoryRepository
 import com.devotion.makancuy.data.repository.MenuRepository
 import com.devotion.makancuy.data.source.local.pref.UserPreference
+import kotlinx.coroutines.Dispatchers
 
 class HomeViewModel(
     private val categoryRepository: CategoryRepository,
@@ -16,12 +18,17 @@ class HomeViewModel(
     val isUsingGridMode: LiveData<Boolean>
         get() = _isUsingGridMode
 
+    fun getListMode(): Int {
+        return if (userPreference.isUsingGridMode()) 1 else 0
+    }
+
     fun changeListMode() {
         val currentValue = _isUsingGridMode.value ?: false
         _isUsingGridMode.postValue(!currentValue)
         userPreference.setUsingGridMode(!currentValue)
     }
 
-    fun getCategory() = categoryRepository.getCategories()
-    fun getMenu() = menuRepository.getMenu()
+    fun getMenu(categoryName: String? = null) =
+        menuRepository.getMenu(categoryName).asLiveData(Dispatchers.IO)
+    fun getCategory() = categoryRepository.getCategories().asLiveData(Dispatchers.IO)
 }

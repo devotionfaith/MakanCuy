@@ -10,7 +10,7 @@ import com.devotion.makancuy.utils.toIndonesianFormat
 
 class MenuListItemViewHolder(
     private val binding: ItemMenuListBinding,
-    private val listener: OnItemCLickedListener<Menu>
+    private val itemClick: (Menu) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Menu> {
     override fun bind(item: Menu) {
         item.let {
@@ -18,10 +18,10 @@ class MenuListItemViewHolder(
                 crossfade(true)
             }
             binding.tvMenuName.text = it.name
-            binding.tvMenuPrice.text = it.price.toIndonesianFormat()
+            binding.tvMenuPrice.text = it.formattedprice
             binding.tvMenuLocation.text = it.locationAddress
             itemView.setOnClickListener {
-                listener.onItemClicked(item)
+                itemClick(item)
             }
         }
     }

@@ -1,7 +1,8 @@
 package com.devotion.makancuy.data.datasource.category
 
 import com.devotion.makancuy.data.model.Category
+import com.devotion.makancuy.data.source.network.model.category.CategoryResponse
 
 interface CategoryDataSource {
-    fun getCategories(): List<Category>
+    suspend fun getCategories(): CategoryResponse
 }

@@ -10,7 +10,8 @@ import com.devotion.makancuy.databinding.ItemCategoryBinding
 import com.devotion.makancuy.utils.ViewHolderBinder
 
 
-class CategoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CategoryAdapter(private val itemClick: (Category) -> Unit)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var asyncDataDiffer = AsyncListDiffer(
         this, object : DiffUtil.ItemCallback<Category>() {
@@ -34,7 +35,7 @@ class CategoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), itemClick
         )
     }
 

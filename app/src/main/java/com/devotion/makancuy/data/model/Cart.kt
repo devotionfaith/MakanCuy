@@ -5,7 +5,8 @@ data class Cart(
     var menuId: String? = null,
     var menuName: String,
     var menuImgUrl: String,
-    var menuPrice: Double,
+    var menuPrice: Int,
+    var menuPriceFormatted : String,
     var itemQuantity: Int = 0,
     var itemNotes: String? = null
 )
