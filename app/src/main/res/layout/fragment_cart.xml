@@ -21,6 +21,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="@string/text_title_shopping_cart"/>
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

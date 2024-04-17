@@ -47,4 +47,6 @@
     <string name="text_edit">Edit</string>
     <string name="text_success">PESANAN BERHASIL</string>
     <string name="text_back_to_home">Kembali ke Home</string>
+    <string name="text_check_out_error">Check Out Error Harap Ulangi</string>
+    <string name="text_count_cart">(%s)</string>
 </resources>
