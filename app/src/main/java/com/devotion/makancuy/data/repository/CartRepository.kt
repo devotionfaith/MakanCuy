@@ -29,21 +29,20 @@ interface CartRepository {
     fun increaseCart(item : Cart): Flow<ResultWrapper<Boolean>>
     fun setCartNotes(item : Cart): Flow<ResultWrapper<Boolean>>
     fun deleteCart(item : Cart): Flow<ResultWrapper<Boolean>>
-    fun deleteAll(): Flow<ResultWrapper<Boolean>>
+    suspend fun checkout(items: List<Cart>): Flow<ResultWrapper<Boolean>>
+    suspend fun deleteAll(): Flow<ResultWrapper<Boolean>>
 }
 
 class CartRepositoryImpl(private val cartDataSource : CartDataSource) : CartRepository{
     override fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Int>>> {
         return cartDataSource.getAllCarts()
             .map {
-                //mapping into cart list and sum the total price
                 proceed {
                     val result = it.toCartList()
                     val totalPrice = result.sumOf { it.menuPrice * it.itemQuantity }
                     Pair(result, totalPrice)
                 }
             }.map {
-                //map to check when list is empty
                 if (it.payload?.first?.isEmpty() == false) return@map it
                 ResultWrapper.Empty(it.payload)
             }.onStart {
@@ -122,11 +121,17 @@ class CartRepositoryImpl(private val cartDataSource : CartDataSource) : CartRepo
         return proceedFlow { cartDataSource.deleteCart(item.toCartEntity()) > 0 }
     }
 
-    override fun deleteAll(): Flow<ResultWrapper<Boolean>> {
+    override suspend fun checkout(items: List<Cart>): Flow<ResultWrapper<Boolean>> {
+        return flow {
+            delay(1000)
+            emit(ResultWrapper.Success(true))
+        }
+    }
+
+    override suspend fun deleteAll(): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
             cartDataSource.deleteAll()
             true
         }
     }
-
 }

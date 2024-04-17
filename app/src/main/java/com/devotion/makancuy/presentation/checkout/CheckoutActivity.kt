@@ -1,8 +1,15 @@
 package com.devotion.makancuy.presentation.checkout
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.devotion.makancuy.R
@@ -14,7 +21,8 @@ import com.devotion.makancuy.data.source.local.database.AppDatabase
 import com.devotion.makancuy.databinding.ActivityCheckoutBinding
 import com.devotion.makancuy.presentation.checkout.adapter.PriceListAdapter
 import com.devotion.makancuy.presentation.common.adapter.CartListAdapter
-import com.devotion.makancuy.presentation.popup.PopupCheckoutActivity
+import com.devotion.makancuy.presentation.home.HomeFragment
+import com.devotion.makancuy.presentation.main.MainActivity
 import com.devotion.makancuy.utils.GenericViewModelFactory
 import com.devotion.makancuy.utils.proceedWhen
 import com.devotion.makancuy.utils.toIndonesianFormat
@@ -47,6 +55,7 @@ class CheckoutActivity : AppCompatActivity() {
         setupList()
         observeData()
         setClickListeners()
+        observeCheckoutResult()
     }
 
     private fun setClickListeners() {
@@ -54,13 +63,51 @@ class CheckoutActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding.btnCheckout.setOnClickListener {
-            showPopup()
-            viewModel.deleteAllCart()
+            viewModel.checkout()
         }
     }
 
-    private fun showPopup() {
-        startActivity(Intent(this, PopupCheckoutActivity::class.java))
+    private fun observeCheckoutResult() {
+        viewModel.checkoutResult.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.layoutState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = false
+                    dialogCheckoutSuccess(this)
+                },
+                doOnError = {
+                    binding.layoutState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = false
+                    Toast.makeText(
+                        this,
+                        getString(R.string.text_check_out_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                doOnLoading = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = true
+                }
+            )
+        }
+    }
+
+    private fun dialogCheckoutSuccess(context: Context) {
+        val dialogView: View = LayoutInflater.from(context).inflate(R.layout.layout_dialog, null)
+        val finishBtn = dialogView.findViewById<Button>(R.id.btn_back_to_home)
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        val dialog = alertDialogBuilder.create()
+        alertDialogBuilder.setView(dialogView)
+        finishBtn.setOnClickListener {
+            deleteCart()
+            startActivity(Intent(this, MainActivity::class.java))
+            dialog.dismiss()
+        }
+        alertDialogBuilder.show()
+    }
+
+    private fun deleteCart() {
+        viewModel.deleteAllCart()
     }
 
     private fun setupList() {

@@ -7,6 +7,8 @@ import com.devotion.makancuy.utils.SharedPreferenceUtils.set
 interface UserPreference {
     fun isUsingGridMode() : Boolean
     fun setUsingGridMode(isUsingGridMode: Boolean)
+//    fun isLoggedIn(): Boolean
+//    fun setLoggedIn(isLoggedIn: Boolean)
 }
 
 class UserPreferenceImpl(private val context: Context) : UserPreference{
@@ -20,6 +22,7 @@ class UserPreferenceImpl(private val context: Context) : UserPreference{
     companion object{
         const val PREF_NAME = "makancuy-pref"
         const val KEY_IS_USING_GRID_MODE = "KEY_IS_USING_GRID_MODE"
+//        const val KEY_IS_LOGGED_IN = "KEY_IS_LOGGED_IN"
     }
 
 }
