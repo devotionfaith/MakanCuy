@@ -15,7 +15,7 @@ interface FirebaseService {
 
     @Throws(exceptionClasses = [Exception::class])
     suspend fun doRegister(email: String, fullName: String, password: String): Boolean
-    fun doLogout(): Boolean
+    suspend fun doLogout(): Boolean
     fun isLoggedIn(): Boolean
     fun getCurrentUser(): FirebaseUser?
 }
@@ -38,7 +38,7 @@ class FirebaseServiceImpl(): FirebaseService{
         return registerResult.user != null
     }
 
-    override fun doLogout(): Boolean {
+    override suspend fun doLogout(): Boolean {
         Firebase.auth.signOut()
         return true
     }

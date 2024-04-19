@@ -12,7 +12,7 @@ interface AuthDataSource {
 
     @Throws(exceptionClasses = [Exception::class])
     suspend fun doRegister(email: String, fullName: String, password: String): Boolean
-    fun doLogout(): Boolean
+    suspend fun doLogout(): Boolean
     fun isLoggedIn(): Boolean
     fun getCurrentUser(): User?
 }
@@ -26,7 +26,7 @@ class FirebaseAuthDataSource(private val service: FirebaseService) : AuthDataSou
         return service.doRegister(email, fullName, password)
     }
 
-    override fun doLogout(): Boolean {
+    override suspend fun doLogout(): Boolean {
         return service.doLogout()
     }
 

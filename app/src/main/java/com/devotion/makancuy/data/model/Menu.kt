@@ -9,7 +9,7 @@ data class Menu (
     var id: String? = UUID.randomUUID().toString(),
     var imageUrl: String,
     var name: String,
-    var price: Int,
+    var price: Double,
     var formattedprice: String,
     var details: String,
     var locationAddress: String,
