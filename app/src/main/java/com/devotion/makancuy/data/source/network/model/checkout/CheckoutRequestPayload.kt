@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class CheckoutRequestPayload(
     @SerializedName("username")
-    val username : String,
+    val username: String,
     @SerializedName("total")
-    val total : Int,
+    val total: Double,
     @SerializedName("orders")
-    val orders : List<CheckoutItemPayload>
+    val orders: List<CheckoutItemPayload>
 )

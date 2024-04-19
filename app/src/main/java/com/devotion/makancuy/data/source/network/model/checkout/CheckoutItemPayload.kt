@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class CheckoutItemPayload(
     @SerializedName("notes")
-    val  notes: String?,
+    val notes: String?,
     @SerializedName("name")
-    val  name: String,
+    val name: String,
     @SerializedName("quantity")
-    val qty : Int,
+    val qty: Int,
     @SerializedName("price")
-    val price : Int
+    val price: Double
     )

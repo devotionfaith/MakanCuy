@@ -3,6 +3,7 @@ package com.devotion.makancuy.presentation.checkout
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -12,11 +13,22 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.devotion.makancuy.R
+import com.devotion.makancuy.data.datasource.auth.AuthDataSource
+import com.devotion.makancuy.data.datasource.auth.FirebaseAuthDataSource
 import com.devotion.makancuy.data.datasource.cart.CartDataSource
 import com.devotion.makancuy.data.datasource.cart.CartDatabaseDataSource
+import com.devotion.makancuy.data.datasource.menu.MenuApiDataSource
+import com.devotion.makancuy.data.datasource.menu.MenuDataSource
 import com.devotion.makancuy.data.repository.CartRepository
 import com.devotion.makancuy.data.repository.CartRepositoryImpl
+import com.devotion.makancuy.data.repository.MenuRepository
+import com.devotion.makancuy.data.repository.MenuRepositoryImpl
+import com.devotion.makancuy.data.repository.UserRepository
+import com.devotion.makancuy.data.repository.UserRepositoryImpl
 import com.devotion.makancuy.data.source.local.database.AppDatabase
+import com.devotion.makancuy.data.source.network.service.RestaurantApiService
+import com.devotion.makancuy.data.source.network.service.firebase.FirebaseService
+import com.devotion.makancuy.data.source.network.service.firebase.FirebaseServiceImpl
 import com.devotion.makancuy.databinding.ActivityCheckoutBinding
 import com.devotion.makancuy.presentation.checkout.adapter.PriceListAdapter
 import com.devotion.makancuy.presentation.common.adapter.CartListAdapter
@@ -32,10 +44,21 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private val viewModel: CheckoutViewModel by viewModels {
-        val db = AppDatabase.getInstance(this)
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CheckoutViewModel(rp))
+        val database = AppDatabase.getInstance(this)
+        val cartDataSource: CartDataSource = CartDatabaseDataSource(database.cartDao())
+        val cartRepository: CartRepository = CartRepositoryImpl(cartDataSource)
+        val service = RestaurantApiService.invoke()
+        val menuDataSource : MenuDataSource = MenuApiDataSource(service)
+        val menuRepository : MenuRepository = MenuRepositoryImpl(menuDataSource)
+        val firebaseService: FirebaseService = FirebaseServiceImpl()
+        val authDataSource: AuthDataSource = FirebaseAuthDataSource(firebaseService)
+        val userRepository: UserRepository = UserRepositoryImpl(authDataSource)
+        GenericViewModelFactory.create(
+            CheckoutViewModel(
+                cartRepository,
+                menuRepository,
+                userRepository)
+        )
     }
 
     private val adapter: CartListAdapter by lazy {
@@ -53,7 +76,6 @@ class CheckoutActivity : AppCompatActivity() {
         setupList()
         observeData()
         setClickListeners()
-        observeCheckoutResult()
     }
 
     private fun setClickListeners() {
@@ -61,12 +83,12 @@ class CheckoutActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding.btnCheckout.setOnClickListener {
-            viewModel.checkout()
+            doCheckout()
         }
     }
 
-    private fun observeCheckoutResult() {
-        viewModel.checkoutResult.observe(this) {
+    private fun doCheckout() {
+        viewModel.checkoutCart().observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutState.root.isVisible = false
@@ -81,6 +103,8 @@ class CheckoutActivity : AppCompatActivity() {
                         getString(R.string.text_check_out_error),
                         Toast.LENGTH_SHORT
                     ).show()
+                    Log.e("CheckoutFailed", "Checkout Failed : ${it.exception?.message.orEmpty()}", it.exception)
+
                 },
                 doOnLoading = {
                     binding.layoutState.root.isVisible = true
