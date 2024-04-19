@@ -82,7 +82,11 @@ class CartFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.btnCheckout.setOnClickListener {
-            if(!viewModel.isLogin()) navigateToLogin() else navigateToCheckout()
+            if(!viewModel.isLogin()) {
+                navigateToLogin()
+            } else {
+                navigateToCheckout()
+            }
         }
     }
 

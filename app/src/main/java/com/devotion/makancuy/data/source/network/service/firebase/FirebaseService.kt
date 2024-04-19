@@ -15,6 +15,10 @@ interface FirebaseService {
 
     @Throws(exceptionClasses = [Exception::class])
     suspend fun doRegister(email: String, fullName: String, password: String): Boolean
+    suspend fun updateProfile(fullName: String? = null): Boolean
+    suspend fun updatePassword(newPassword: String): Boolean
+    suspend fun updateEmail(newEmail: String): Boolean
+    fun requestChangePasswordByEmail(): Boolean
     suspend fun doLogout(): Boolean
     fun isLoggedIn(): Boolean
     fun getCurrentUser(): FirebaseUser?
@@ -37,7 +41,33 @@ class FirebaseServiceImpl(): FirebaseService{
         )?.await()
         return registerResult.user != null
     }
+    override suspend fun updateProfile(fullName: String?): Boolean {
+        getCurrentUser()?.updateProfile(
+            userProfileChangeRequest {
+                fullName?.let {
+                    displayName = fullName
+                }
+            }
+        )?.await()
+        return true
+    }
 
+    override suspend fun updatePassword(newPassword: String): Boolean {
+        getCurrentUser()?.updatePassword(newPassword)?.await()
+        return true
+    }
+
+    override suspend fun updateEmail(newEmail: String): Boolean {
+        getCurrentUser()?.verifyBeforeUpdateEmail(newEmail)?.await()
+        return true
+    }
+
+    override fun requestChangePasswordByEmail(): Boolean {
+        getCurrentUser()?.email?.let {
+            firebaseAuth.sendPasswordResetEmail(it)
+        }
+        return true
+    }
     override suspend fun doLogout(): Boolean {
         Firebase.auth.signOut()
         return true
