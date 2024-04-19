@@ -3,7 +3,7 @@ package com.devotion.makancuy.utils
 import java.text.NumberFormat
 import java.util.Locale
 
-fun Int?.intToCurrency(language: String, country: String): String? {
+fun Double?.DoubleToCurrency(language: String, country: String): String? {
     return try {
         val localeID = Locale(language, country)
         val numberFormat = NumberFormat.getCurrencyInstance(localeID)
@@ -13,9 +13,9 @@ fun Int?.intToCurrency(language: String, country: String): String? {
     }
 }
 
-fun Int?.toIndonesianFormat() = this.intToCurrency("in", "ID")
+fun Double?.toIndonesianFormat() = this.DoubleToCurrency("in", "ID")
 
-fun String?.currencyToInt(language: String, country: String): Int? {
+fun String?.currencyToDouble(language: String, country: String): Int? {
     return try {
         val localeID = Locale(language, country)
         val numberFormat = NumberFormat.getCurrencyInstance(localeID)
@@ -26,4 +26,4 @@ fun String?.currencyToInt(language: String, country: String): Int? {
     }
 }
 
-fun String?.fromCurrencyToInt(): Int? = this.currencyToInt("in", "ID")
+fun String?.fromCurrencyToInt(): Int? = this.currencyToDouble("in", "ID")

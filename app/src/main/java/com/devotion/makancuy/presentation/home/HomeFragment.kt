@@ -4,18 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.devotion.makancuy.R
 import com.devotion.makancuy.data.datasource.category.CategoryApiDataSource
 import com.devotion.makancuy.data.datasource.menu.MenuApiDataSource
+import com.devotion.makancuy.data.datasource.userpref.UserPreferenceDataSource
+import com.devotion.makancuy.data.datasource.userpref.UserPreferenceDataSourceImpl
 import com.devotion.makancuy.data.model.Category
 import com.devotion.makancuy.data.model.Menu
 import com.devotion.makancuy.data.repository.CategoryRepository
 import com.devotion.makancuy.data.repository.CategoryRepositoryImpl
 import com.devotion.makancuy.data.repository.MenuRepository
 import com.devotion.makancuy.data.repository.MenuRepositoryImpl
+import com.devotion.makancuy.data.repository.UserPreferenceRepository
+import com.devotion.makancuy.data.repository.UserPreferenceRepositoryImpl
+import com.devotion.makancuy.data.source.local.pref.UserPreference
 import com.devotion.makancuy.data.source.local.pref.UserPreferenceImpl
 import com.devotion.makancuy.data.source.network.service.RestaurantApiService
 import com.devotion.makancuy.databinding.FragmentHomeBinding
@@ -29,16 +35,18 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels {
         val service = RestaurantApiService.invoke()
+        val userPreference: UserPreference = UserPreferenceImpl(requireContext())
+        val userPrefDataSource: UserPreferenceDataSource = UserPreferenceDataSourceImpl(userPreference)
+        val userPreferenceRepository: UserPreferenceRepository = UserPreferenceRepositoryImpl(userPrefDataSource)
         val categoryDataSource = CategoryApiDataSource(service)
         val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
         val menuDataSource = MenuApiDataSource(service)
         val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
-        val userPreference = UserPreferenceImpl(requireContext())
         GenericViewModelFactory.create(
             HomeViewModel(
                 categoryRepository,
                 menuRepository,
-                userPreference
+                userPreferenceRepository
             )
         )
     }
@@ -72,9 +80,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupCategory()
         setupMenu()
-        observeGridMode()
+        applyGridMode()
+        setupCategory()
         getCategoryData()
         getMenuData(null)
         setClickAction()
@@ -122,28 +130,23 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun observeGridMode() {
-        viewModel.isUsingGridMode.observe(viewLifecycleOwner) { isUsingGridMode ->
-            setIcon(isUsingGridMode)
-            changeLayout(isUsingGridMode)
-        }
-    }
-
-    private fun changeLayout(usingGridMode: Boolean) {
-        val listMode = if (usingGridMode) MenuAdapter.MODE_GRID else MenuAdapter.MODE_LIST
+    private fun applyGridMode() {
+        val isUsingGridMode = viewModel.isUsingGridMode()
+        val listMode = if (isUsingGridMode) MenuAdapter.MODE_GRID else MenuAdapter.MODE_LIST
+        setIcon(isUsingGridMode)
         menuAdapter.updateListMode(listMode)
-        setupMenu()
         binding.rvMenu.apply {
-            layoutManager = GridLayoutManager(requireContext(), if (usingGridMode) 2 else 1)
+            layoutManager = GridLayoutManager(requireContext(), if (isUsingGridMode) 2 else 1)
+            adapter = menuAdapter
         }
     }
 
     private fun setClickAction() {
         binding.ivChangeLayout.setOnClickListener {
             viewModel.changeListMode()
+            applyGridMode()
         }
     }
-
     private fun setIcon(usingGridMode: Boolean) {
         binding.ivChangeLayout.setImageResource(if (usingGridMode) R.drawable.ic_list else R.drawable.ic_grid)
     }

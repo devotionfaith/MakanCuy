@@ -2,9 +2,12 @@ package com.devotion.makancuy.presentation.profile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.devotion.makancuy.data.model.Profile
+import com.devotion.makancuy.data.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(private val userRepository: UserRepository)  : ViewModel() {
 
     val profileData = MutableLiveData(
         Profile(
@@ -15,6 +18,7 @@ class ProfileViewModel : ViewModel() {
         )
     )
 
+    fun doLogout() = userRepository.doLogout().asLiveData(Dispatchers.IO)
     val isEditMode = MutableLiveData(false)
     val buttonText = MutableLiveData("Edit")
 

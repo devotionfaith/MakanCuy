@@ -15,7 +15,7 @@ class CategoryItemViewHolder(
             binding.ivCategoryImage.load(item.imageurl) {
                 crossfade(true)
             }
-            binding.tvCategoryName.text = it.name
+            binding.tvCategoryName.text = item.name
             itemView.setOnClickListener{itemClick(item)}
         }
     }

@@ -45,8 +45,21 @@
     <string name="text_hint_email">Email</string>
     <string name="text_email">rgusti530@gmail.com\n</string>
     <string name="text_edit">Edit</string>
-    <string name="text_success">PESANAN BERHASIL</string>
-    <string name="text_back_to_home">Kembali ke Home</string>
-    <string name="text_check_out_error">Check Out Error Harap Ulangi</string>
+    <string name="text_success">ORDER SUCCESS</string>
+    <string name="text_back_to_home">Back to Home</string>
+    <string name="text_check_out_error">Check Out Error</string>
     <string name="text_count_cart">(%s)</string>
+    <string name="text_hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm password</string>
+    <string name="text_button_login">LOGIN</string>
+    <string name="text_button_signup">SIGN UP</string>
+    <string name="text_highlight_login_here">Login Here</string>
+    <string name="text_error_name_cannot_empty">Name cannot empty</string>
+    <string name="text_error_email_empty">Email cannot empty</string>
+    <string name="text_error_email_invalid">Email is invalid</string>
+    <string name="text_error_password_empty">Password cannot empty</string>
+    <string name="text_error_password_less_than_8_char">Password cannot less than 8 character</string>
+    <string name="text_password_does_not_match">Password does not match</string>
+    <string name="text_highlight_register">Register Here</string>
+    <string name="text_button_logout">Log Out</string>
 </resources>

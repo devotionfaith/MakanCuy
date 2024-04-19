@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 interface CartRepository {
-    fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Int>>>
-    fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>,List<PriceItem>, Int>>>
+    fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Double>>>
+    fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>,List<PriceItem>, Double>>>
 
     fun createCart(
         menu : Menu,
@@ -34,7 +34,7 @@ interface CartRepository {
 }
 
 class CartRepositoryImpl(private val cartDataSource : CartDataSource) : CartRepository{
-    override fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Int>>> {
+    override fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Double>>> {
         return cartDataSource.getAllCarts()
             .map {
                 proceed {
@@ -51,7 +51,7 @@ class CartRepositoryImpl(private val cartDataSource : CartDataSource) : CartRepo
             }
     }
 
-    override fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>, List<PriceItem>, Int>>> {
+    override fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>, List<PriceItem>, Double>>> {
         return cartDataSource.getAllCarts()
             .map {
                 proceed {

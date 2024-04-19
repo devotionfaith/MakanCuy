@@ -1,6 +1,5 @@
 package com.devotion.makancuy.presentation.checkout
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,7 +20,6 @@ import com.devotion.makancuy.data.source.local.database.AppDatabase
 import com.devotion.makancuy.databinding.ActivityCheckoutBinding
 import com.devotion.makancuy.presentation.checkout.adapter.PriceListAdapter
 import com.devotion.makancuy.presentation.common.adapter.CartListAdapter
-import com.devotion.makancuy.presentation.home.HomeFragment
 import com.devotion.makancuy.presentation.main.MainActivity
 import com.devotion.makancuy.utils.GenericViewModelFactory
 import com.devotion.makancuy.utils.proceedWhen

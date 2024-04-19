@@ -9,16 +9,23 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.devotion.makancuy.R
+import com.devotion.makancuy.data.datasource.auth.AuthDataSource
+import com.devotion.makancuy.data.datasource.auth.FirebaseAuthDataSource
 import com.devotion.makancuy.data.datasource.cart.CartDataSource
 import com.devotion.makancuy.data.datasource.cart.CartDatabaseDataSource
 import com.devotion.makancuy.data.model.Cart
 import com.devotion.makancuy.data.repository.CartRepository
 import com.devotion.makancuy.data.repository.CartRepositoryImpl
+import com.devotion.makancuy.data.repository.UserRepository
+import com.devotion.makancuy.data.repository.UserRepositoryImpl
 import com.devotion.makancuy.data.source.local.database.AppDatabase
+import com.devotion.makancuy.data.source.network.service.firebase.FirebaseService
+import com.devotion.makancuy.data.source.network.service.firebase.FirebaseServiceImpl
 import com.devotion.makancuy.databinding.FragmentCartBinding
 import com.devotion.makancuy.presentation.checkout.CheckoutActivity
 import com.devotion.makancuy.presentation.common.adapter.CartListAdapter
 import com.devotion.makancuy.presentation.common.adapter.CartListener
+import com.devotion.makancuy.presentation.login.LoginActivity
 import com.devotion.makancuy.utils.GenericViewModelFactory
 import com.devotion.makancuy.utils.hideKeyboard
 import com.devotion.makancuy.utils.proceedWhen
@@ -26,12 +33,15 @@ import com.devotion.makancuy.utils.toIndonesianFormat
 
 class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
-
+    private val isLogin = true
     private val viewModel: CartViewModel by viewModels {
         val db = AppDatabase.getInstance(requireContext())
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CartViewModel(rp))
+        val cds: CartDataSource = CartDatabaseDataSource(db.cartDao())
+        val rp: CartRepository = CartRepositoryImpl(cds)
+        val fs : FirebaseService = FirebaseServiceImpl()
+        val ads : AuthDataSource = FirebaseAuthDataSource(fs)
+        val ur : UserRepository = UserRepositoryImpl(ads)
+        GenericViewModelFactory.create(CartViewModel(rp, ur))
     }
 
     private val adapter: CartListAdapter by lazy {
@@ -72,8 +82,16 @@ class CartFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.btnCheckout.setOnClickListener {
-            startActivity(Intent(requireContext(), CheckoutActivity::class.java))
+            if(!viewModel.isLogin()) navigateToLogin() else navigateToCheckout()
         }
+    }
+
+    private fun navigateToLogin() {
+        startActivity(Intent(requireContext(), LoginActivity::class.java))
+    }
+
+    private fun navigateToCheckout(){
+        startActivity(Intent(requireContext(), CheckoutActivity::class.java))
     }
 
     private fun observeData() {

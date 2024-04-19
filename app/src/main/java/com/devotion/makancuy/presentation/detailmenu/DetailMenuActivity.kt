@@ -53,7 +53,7 @@ class DetailMenuActivity : AppCompatActivity() {
 
     private fun observeData() {
         viewModel.priceLiveData.observe(this) {
-            binding.btnAddToCart.isEnabled = it != 0
+            binding.btnAddToCart.isEnabled = it != 0.0
             binding.btnAddToCart.text =
                 getString(R.string.text_add_to_cart, it.toIndonesianFormat())
         }
