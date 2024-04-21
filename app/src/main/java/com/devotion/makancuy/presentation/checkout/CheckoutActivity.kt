@@ -30,12 +30,14 @@ import com.devotion.makancuy.data.source.network.service.RestaurantApiService
 import com.devotion.makancuy.data.source.network.service.firebase.FirebaseService
 import com.devotion.makancuy.data.source.network.service.firebase.FirebaseServiceImpl
 import com.devotion.makancuy.databinding.ActivityCheckoutBinding
+import com.devotion.makancuy.databinding.LayoutDialogBinding
 import com.devotion.makancuy.presentation.checkout.adapter.PriceListAdapter
 import com.devotion.makancuy.presentation.common.adapter.CartListAdapter
 import com.devotion.makancuy.presentation.main.MainActivity
 import com.devotion.makancuy.utils.GenericViewModelFactory
 import com.devotion.makancuy.utils.proceedWhen
 import com.devotion.makancuy.utils.toIndonesianFormat
+import kotlinx.coroutines.delay
 
 class CheckoutActivity : AppCompatActivity() {
 
@@ -115,17 +117,16 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun dialogCheckoutSuccess(context: Context) {
-        val dialogView: View = LayoutInflater.from(context).inflate(R.layout.layout_dialog, null)
-        val finishBtn = dialogView.findViewById<Button>(R.id.btn_back_to_home)
+        val dialogBinding = LayoutDialogBinding.inflate(LayoutInflater.from(context))
         val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setView(dialogBinding.root)
         val dialog = alertDialogBuilder.create()
-        alertDialogBuilder.setView(dialogView)
-        finishBtn.setOnClickListener {
+        dialogBinding.btnBackToHome.setOnClickListener {
             deleteCart()
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(context, MainActivity::class.java))
             dialog.dismiss()
         }
-        alertDialogBuilder.show()
+        dialog.show()
     }
 
     private fun deleteCart() {
