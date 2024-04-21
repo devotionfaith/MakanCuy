@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import coil.load
 import com.devotion.makancuy.R
 import com.devotion.makancuy.data.datasource.cart.CartDataSource
@@ -89,6 +90,7 @@ class DetailMenuActivity : AppCompatActivity() {
                         getString(R.string.text_adding_success),
                         Toast.LENGTH_SHORT
                     ).show()
+                    binding.pbLoadingAddToCart.isVisible = false
                     finish()
                 },
                 doOnError = {
@@ -99,11 +101,8 @@ class DetailMenuActivity : AppCompatActivity() {
                     ).show()
                 },
                 doOnLoading = {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.text_loading),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    binding.pbLoadingAddToCart.isVisible = true
+                    binding.btnAddToCart.isEnabled = false
                 }
             )
         }
