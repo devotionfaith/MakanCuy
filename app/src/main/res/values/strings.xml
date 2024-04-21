@@ -4,6 +4,7 @@
     <string name="text_tittle_banner">DISKON 40%</string>
     <string name="text_desc_banner">Pesan Makanan Lewat Aplikasi dan Dapatkan Diskon</string>
     <string name="text_name">Hello, %1$s</string>
+    <string name="default_username">Hello, There</string>
     <string name="text_greetings">Mau Makan Apa Hari Ini?</string>
     <string name="text_tittle_categories">Categories</string>
     <string name="text_see_all">See All..</string>
@@ -65,7 +66,6 @@
     <string name="text_highlight_register">Register Here</string>
     <string name="text_button_logout">Log Out</string>
     <string name="text_success_notif">BERHASIL</string>
-    <string name="default_username">Hello, There</string>
     <string name="text_error_menu">Loading Menu Gagal</string>
     <string name="text_error_category">Loading Category Gagal</string>
 </resources>

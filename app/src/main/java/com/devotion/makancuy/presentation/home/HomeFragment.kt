@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.devotion.makancuy.R
 import com.devotion.makancuy.data.datasource.auth.AuthDataSource
@@ -46,8 +45,10 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels {
         val service = RestaurantApiService.invoke()
         val userPreference: UserPreference = UserPreferenceImpl(requireContext())
-        val userPrefDataSource: UserPreferenceDataSource = UserPreferenceDataSourceImpl(userPreference)
-        val userPreferenceRepository: UserPreferenceRepository = UserPreferenceRepositoryImpl(userPrefDataSource)
+        val userPrefDataSource: UserPreferenceDataSource =
+            UserPreferenceDataSourceImpl(userPreference)
+        val userPreferenceRepository: UserPreferenceRepository =
+            UserPreferenceRepositoryImpl(userPrefDataSource)
         val categoryDataSource = CategoryApiDataSource(service)
         val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
         val menuDataSource = MenuApiDataSource(service)
@@ -61,10 +62,10 @@ class HomeFragment : Fragment() {
         )
     }
 
-    private val mainViewModel : MainViewModel by activityViewModels{
-        val s : FirebaseService = FirebaseServiceImpl()
-        val ds : AuthDataSource = FirebaseAuthDataSource(s)
-        val r : UserRepository = UserRepositoryImpl(ds)
+    private val mainViewModel: MainViewModel by activityViewModels {
+        val s: FirebaseService = FirebaseServiceImpl()
+        val ds: AuthDataSource = FirebaseAuthDataSource(s)
+        val r: UserRepository = UserRepositoryImpl(ds)
         GenericViewModelFactory.create(MainViewModel(r))
     }
     private val categoryAdapter: CategoryAdapter by lazy {
@@ -106,15 +107,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupUsername() {
-        if (mainViewModel.isLogin()) {
-            val username = mainViewModel.getCurrentUsername()
-            if (username != null) {
-                binding.layoutHeader.tvName.text = getString(R.string.text_name, username)
-            } else {
+        mainViewModel.getCurrentUsername().let { username ->
+            if (username.isNullOrEmpty())
                 binding.layoutHeader.tvName.text = getString(R.string.default_username)
-            }
-        } else {
-            binding.layoutHeader.tvName.text = getString(R.string.default_username)
+            else
+                binding.layoutHeader.tvName.text = getString(R.string.text_name, username)
         }
     }
 
