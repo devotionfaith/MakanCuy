@@ -4,6 +4,7 @@ import com.devotion.makancuy.data.source.local.pref.UserPreference
 
 interface UserPreferenceDataSource {
     fun isUsingGridMode(): Boolean
+
     fun setUsingGridMode(isUsingGridMode: Boolean)
 }
 

@@ -9,39 +9,52 @@ import com.devotion.makancuy.data.model.Category
 import com.devotion.makancuy.databinding.ItemCategoryBinding
 import com.devotion.makancuy.utils.ViewHolderBinder
 
+class CategoryAdapter(private val itemClick: (Category) -> Unit) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var asyncDataDiffer =
+        AsyncListDiffer(
+            this,
+            object : DiffUtil.ItemCallback<Category>() {
+                override fun areItemsTheSame(
+                    oldItem: Category,
+                    newItem: Category,
+                ): Boolean {
+                    return oldItem.name == newItem.name
+                }
 
-class CategoryAdapter(private val itemClick: (Category) -> Unit)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var asyncDataDiffer = AsyncListDiffer(
-        this, object : DiffUtil.ItemCallback<Category>() {
-            override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-                return oldItem.name == newItem.name
-            }
-
-            override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
-                return oldItem.hashCode() == oldItem.hashCode()
-            }
-        }
-    )
+                override fun areContentsTheSame(
+                    oldItem: Category,
+                    newItem: Category,
+                ): Boolean {
+                    return oldItem.hashCode() == oldItem.hashCode()
+                }
+            },
+        )
 
     fun submitDataCategory(data: List<Category>) {
         asyncDataDiffer.submitList(data)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): RecyclerView.ViewHolder {
         return CategoryItemViewHolder(
             ItemCategoryBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            ), itemClick
+                false,
+            ),
+            itemClick,
         )
     }
 
     override fun getItemCount(): Int = asyncDataDiffer.currentList.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         if (holder !is ViewHolderBinder<*>) return
         (holder as ViewHolderBinder<Category>).bind(asyncDataDiffer.currentList[position])
     }

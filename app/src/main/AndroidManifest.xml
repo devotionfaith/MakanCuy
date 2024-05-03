@@ -32,9 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.popup.PopupCheckoutActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.checkout.CheckoutActivity"
             android:exported="false" />
         <activity

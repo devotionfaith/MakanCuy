@@ -6,30 +6,50 @@ import com.devotion.makancuy.data.source.network.service.firebase.FirebaseServic
 import java.lang.Exception
 
 interface AuthDataSource {
+    @Throws(exceptionClasses = [Exception::class])
+    suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Boolean
 
     @Throws(exceptionClasses = [Exception::class])
-    suspend fun doLogin(email: String, password: String): Boolean
-
-    @Throws(exceptionClasses = [Exception::class])
-    suspend fun doRegister(email: String, fullName: String, password: String): Boolean
+    suspend fun doRegister(
+        email: String,
+        fullName: String,
+        password: String,
+    ): Boolean
 
     suspend fun updateProfile(fullName: String? = null): Boolean
+
     suspend fun updatePassword(newPassword: String): Boolean
+
     suspend fun updateEmail(newEmail: String): Boolean
+
     fun requestChangePasswordByEmail(): Boolean
+
     suspend fun doLogout(): Boolean
+
     fun isLoggedIn(): Boolean
+
     fun getCurrentUser(): User?
 }
 
-class FirebaseAuthDataSource(private val service: FirebaseService) : AuthDataSource{
-    override suspend fun doLogin(email: String, password: String): Boolean {
+class FirebaseAuthDataSource(private val service: FirebaseService) : AuthDataSource {
+    override suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Boolean {
         return service.doLogin(email, password)
     }
 
-    override suspend fun doRegister(email: String, fullName: String, password: String): Boolean {
+    override suspend fun doRegister(
+        email: String,
+        fullName: String,
+        password: String,
+    ): Boolean {
         return service.doRegister(email, fullName, password)
     }
+
     override suspend fun updateProfile(fullName: String?): Boolean {
         return service.updateProfile(fullName)
     }
@@ -57,5 +77,4 @@ class FirebaseAuthDataSource(private val service: FirebaseService) : AuthDataSou
     override fun getCurrentUser(): User? {
         return service.getCurrentUser().toUser()
     }
-
 }

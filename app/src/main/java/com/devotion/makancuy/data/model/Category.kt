@@ -1,8 +1,6 @@
 package com.devotion.makancuy.data.model
 
-import java.util.UUID
-
-data class Category (
+data class Category(
     var imageurl: String,
-    var name: String
+    var name: String,
 )
