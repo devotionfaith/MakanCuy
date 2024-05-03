@@ -5,11 +5,10 @@ import coil.load
 import com.devotion.makancuy.data.model.Menu
 import com.devotion.makancuy.databinding.ItemMenuGridBinding
 import com.devotion.makancuy.utils.ViewHolderBinder
-import com.devotion.makancuy.utils.toIndonesianFormat
 
 class MenuGridItemViewHolder(
     private val binding: ItemMenuGridBinding,
-    private val itemClick: (Menu) -> Unit
+    private val itemClick: (Menu) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Menu> {
     override fun bind(item: Menu) {
         item.let {

@@ -42,8 +42,8 @@
     <string name="shopping_summary">Order Summary</string>
     <string name="hint_name">Nama</string>
     <string name="text_username">devotionfaith</string>
-    <string name="hint_username">Username</string>
     <string name="text_hint_email">Email</string>
+    <string name="hint_username">Username</string>
     <string name="text_email">rgusti530@gmail.com\n</string>
     <string name="text_edit">Edit Username</string>
     <string name="text_editEmail">Edit Email</string>
@@ -68,4 +68,5 @@
     <string name="text_success_notif">BERHASIL</string>
     <string name="text_error_menu">Loading Menu Gagal</string>
     <string name="text_error_category">Loading Category Gagal</string>
+    <string name="kembali_ke_home">Kembali ke Home</string>
 </resources>

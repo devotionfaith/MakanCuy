@@ -1,6 +1,5 @@
 package com.devotion.makancuy.data.datasource.category
 
-import com.devotion.makancuy.data.model.Category
 import com.devotion.makancuy.data.source.network.model.category.CategoryResponse
 
 interface CategoryDataSource {

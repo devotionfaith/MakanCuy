@@ -4,27 +4,25 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import coil.load
 import com.devotion.makancuy.R
-import com.devotion.makancuy.data.datasource.cart.CartDataSource
-import com.devotion.makancuy.data.datasource.cart.CartDatabaseDataSource
 import com.devotion.makancuy.data.model.Menu
-import com.devotion.makancuy.data.repository.CartRepository
-import com.devotion.makancuy.data.repository.CartRepositoryImpl
-import com.devotion.makancuy.data.source.local.database.AppDatabase
 import com.devotion.makancuy.databinding.ActivityDetailMenuBinding
-import com.devotion.makancuy.utils.GenericViewModelFactory
 import com.devotion.makancuy.utils.proceedWhen
 import com.devotion.makancuy.utils.toIndonesianFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class DetailMenuActivity : AppCompatActivity() {
-
     companion object {
         const val EXTRAS_ITEM = "EXTRAS_DETAIL_DATA"
-        fun startActivity(context: Context, menu: Menu) {
+
+        fun startActivity(
+            context: Context,
+            menu: Menu,
+        ) {
             val intent = Intent(context, DetailMenuActivity::class.java)
             intent.putExtra(EXTRAS_ITEM, menu)
             context.startActivity(intent)
@@ -35,13 +33,8 @@ class DetailMenuActivity : AppCompatActivity() {
         ActivityDetailMenuBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: DetailMenuViewModel by viewModels {
-        val db = AppDatabase.getInstance(this)
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(
-            DetailMenuViewModel(intent?.extras, rp)
-        )
+    private val viewModel: DetailMenuViewModel by viewModel {
+        parametersOf(intent.extras)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +81,7 @@ class DetailMenuActivity : AppCompatActivity() {
                     Toast.makeText(
                         this,
                         getString(R.string.text_adding_success),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                     binding.pbLoadingAddToCart.isVisible = false
                     finish()
@@ -97,13 +90,13 @@ class DetailMenuActivity : AppCompatActivity() {
                     Toast.makeText(
                         this,
                         getString(R.string.text_failed_add),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnLoading = {
                     binding.pbLoadingAddToCart.isVisible = true
                     binding.btnAddToCart.isEnabled = false
-                }
+                },
             )
         }
     }

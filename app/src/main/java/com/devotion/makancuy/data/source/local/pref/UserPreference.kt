@@ -1,28 +1,24 @@
 package com.devotion.makancuy.data.source.local.pref
 
-import android.content.Context
-import com.devotion.makancuy.utils.SharedPreferenceUtils
+import android.content.SharedPreferences
 import com.devotion.makancuy.utils.SharedPreferenceUtils.set
 
 interface UserPreference {
-    fun isUsingGridMode() : Boolean
+    fun isUsingGridMode(): Boolean
+
     fun setUsingGridMode(isUsingGridMode: Boolean)
-//    fun isLoggedIn(): Boolean
-//    fun setLoggedIn(isLoggedIn: Boolean)
 }
 
-class UserPreferenceImpl(private val context: Context) : UserPreference{
-    private val pref = SharedPreferenceUtils.createPreference(context, PREF_NAME)
+class UserPreferenceImpl(val pref: SharedPreferences) : UserPreference {
     override fun isUsingGridMode(): Boolean = pref.getBoolean(KEY_IS_USING_GRID_MODE, false)
 
     override fun setUsingGridMode(isUsingGridMode: Boolean) {
         pref[KEY_IS_USING_GRID_MODE] = isUsingGridMode
     }
 
-    companion object{
+    companion object {
         const val PREF_NAME = "makancuy-pref"
         const val KEY_IS_USING_GRID_MODE = "KEY_IS_USING_GRID_MODE"
 //        const val KEY_IS_LOGGED_IN = "KEY_IS_LOGGED_IN"
     }
-
 }

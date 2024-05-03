@@ -7,95 +7,52 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.devotion.makancuy.R
-import com.devotion.makancuy.data.datasource.auth.AuthDataSource
-import com.devotion.makancuy.data.datasource.auth.FirebaseAuthDataSource
-import com.devotion.makancuy.data.datasource.category.CategoryApiDataSource
-import com.devotion.makancuy.data.datasource.menu.MenuApiDataSource
-import com.devotion.makancuy.data.datasource.userpref.UserPreferenceDataSource
-import com.devotion.makancuy.data.datasource.userpref.UserPreferenceDataSourceImpl
 import com.devotion.makancuy.data.model.Category
 import com.devotion.makancuy.data.model.Menu
-import com.devotion.makancuy.data.repository.CategoryRepository
-import com.devotion.makancuy.data.repository.CategoryRepositoryImpl
-import com.devotion.makancuy.data.repository.MenuRepository
-import com.devotion.makancuy.data.repository.MenuRepositoryImpl
-import com.devotion.makancuy.data.repository.UserPreferenceRepository
-import com.devotion.makancuy.data.repository.UserPreferenceRepositoryImpl
-import com.devotion.makancuy.data.repository.UserRepository
-import com.devotion.makancuy.data.repository.UserRepositoryImpl
-import com.devotion.makancuy.data.source.local.pref.UserPreference
-import com.devotion.makancuy.data.source.local.pref.UserPreferenceImpl
-import com.devotion.makancuy.data.source.network.service.RestaurantApiService
-import com.devotion.makancuy.data.source.network.service.firebase.FirebaseService
-import com.devotion.makancuy.data.source.network.service.firebase.FirebaseServiceImpl
 import com.devotion.makancuy.databinding.FragmentHomeBinding
 import com.devotion.makancuy.presentation.detailmenu.DetailMenuActivity
 import com.devotion.makancuy.presentation.home.adapter.CategoryAdapter
 import com.devotion.makancuy.presentation.home.adapter.MenuAdapter
-import com.devotion.makancuy.presentation.main.MainViewModel
-import com.devotion.makancuy.utils.GenericViewModelFactory
 import com.devotion.makancuy.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: HomeViewModel by viewModels {
-        val service = RestaurantApiService.invoke()
-        val userPreference: UserPreference = UserPreferenceImpl(requireContext())
-        val userPrefDataSource: UserPreferenceDataSource =
-            UserPreferenceDataSourceImpl(userPreference)
-        val userPreferenceRepository: UserPreferenceRepository =
-            UserPreferenceRepositoryImpl(userPrefDataSource)
-        val categoryDataSource = CategoryApiDataSource(service)
-        val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
-        val menuDataSource = MenuApiDataSource(service)
-        val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
-        GenericViewModelFactory.create(
-            HomeViewModel(
-                categoryRepository,
-                menuRepository,
-                userPreferenceRepository
-            )
-        )
-    }
-
-    private val mainViewModel: MainViewModel by activityViewModels {
-        val s: FirebaseService = FirebaseServiceImpl()
-        val ds: AuthDataSource = FirebaseAuthDataSource(s)
-        val r: UserRepository = UserRepositoryImpl(ds)
-        GenericViewModelFactory.create(MainViewModel(r))
-    }
+    private val viewModel: HomeViewModel by viewModel()
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter {
             getMenuData(it.name)
         }
     }
-
     private val menuAdapter: MenuAdapter by lazy {
         MenuAdapter(viewModel.getListMode()) {
             DetailMenuActivity.startActivity(
                 requireContext(),
-                it
+                it,
             )
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentHomeBinding.inflate(
-            layoutInflater,
-            container,
-            false
-        )
+        binding =
+            FragmentHomeBinding.inflate(
+                layoutInflater,
+                container,
+                false,
+            )
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setupMenu()
         applyGridMode()
@@ -107,11 +64,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupUsername() {
-        mainViewModel.getCurrentUsername().let { username ->
-            if (username.isNullOrEmpty())
+        viewModel.getCurrentUsername().let { username ->
+            if (username.isNullOrEmpty()) {
                 binding.layoutHeader.tvName.text = getString(R.string.default_username)
-            else
+            } else {
                 binding.layoutHeader.tvName.text = getString(R.string.text_name, username)
+            }
         }
     }
 
@@ -122,18 +80,18 @@ class HomeFragment : Fragment() {
                     it.payload?.let { data ->
                         bindMenuList(data)
                     }
-                    binding.pbLoadingCategory.isVisible = false
+                    binding.pbLoadingMenu.isVisible = false
                 },
                 doOnError = {
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.text_error_category),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnLoading = {
-                    binding.pbLoadingCategory.isVisible = true
-                }
+                    binding.pbLoadingMenu.isVisible = true
+                },
             )
         }
     }
@@ -153,18 +111,18 @@ class HomeFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data -> bindCategory(data) }
-                    binding.pbLoadingMenu.isVisible = false
+                    binding.pbLoadingCategory.isVisible = false
                 },
                 doOnError = {
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.text_error_menu),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnLoading = {
-                    binding.pbLoadingMenu.isVisible = true
-                }
+                    binding.pbLoadingCategory.isVisible = true
+                },
             )
         }
     }

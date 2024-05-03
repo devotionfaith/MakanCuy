@@ -1,6 +1,5 @@
 package com.devotion.makancuy.data.source.network.service
 
-
 import com.devotion.makancuy.BuildConfig
 import com.devotion.makancuy.data.source.network.model.category.CategoryResponse
 import com.devotion.makancuy.data.source.network.model.checkout.CheckoutRequestPayload
@@ -16,28 +15,33 @@ import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface RestaurantApiService {
-
     @GET("category")
     suspend fun getCategories(): CategoryResponse
 
     @GET("listmenu")
-    suspend fun getMenu(@Query("c") categoryName : String? = null): MenuResponse
+    suspend fun getMenu(
+        @Query("c") categoryName: String? = null,
+    ): MenuResponse
 
     @POST("order")
-    suspend fun createOrder(@Body payload : CheckoutRequestPayload): CheckoutResponse
+    suspend fun createOrder(
+        @Body payload: CheckoutRequestPayload,
+    ): CheckoutResponse
 
-    companion object{
+    companion object {
         @JvmStatic
         operator fun invoke(): RestaurantApiService {
-            val okHttpClient = OkHttpClient.Builder()
-                .connectTimeout(120, TimeUnit.SECONDS)
-                .readTimeout(120, TimeUnit.SECONDS)
-                .build()
-            val retrofit = Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build()
+            val okHttpClient =
+                OkHttpClient.Builder()
+                    .connectTimeout(120, TimeUnit.SECONDS)
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .build()
+            val retrofit =
+                Retrofit.Builder()
+                    .baseUrl(BuildConfig.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient)
+                    .build()
             return retrofit.create(RestaurantApiService::class.java)
         }
     }

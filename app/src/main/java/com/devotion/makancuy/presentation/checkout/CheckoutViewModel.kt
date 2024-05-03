@@ -13,14 +13,17 @@ import kotlinx.coroutines.launch
 class CheckoutViewModel(
     private val cartRepository: CartRepository,
     private val menuRepository: MenuRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : ViewModel() {
     val checkoutData = cartRepository.getCheckoutData().asLiveData(Dispatchers.IO)
+
     fun getCurrentUser() = userRepository.getCurrentUser()
-    fun checkoutCart() = menuRepository.createOrder(
-        checkoutData.value?.payload?.first.orEmpty(),
-        getCurrentUser()?.fullName.orEmpty()
-    ).asLiveData(Dispatchers.IO)
+
+    fun checkoutCart() =
+        menuRepository.createOrder(
+            checkoutData.value?.payload?.first.orEmpty(),
+            getCurrentUser()?.fullName.orEmpty(),
+        ).asLiveData(Dispatchers.IO)
 
     fun deleteAllCart() {
         viewModelScope.launch(Dispatchers.IO) {
