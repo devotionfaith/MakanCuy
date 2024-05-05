@@ -49,7 +49,7 @@ class CartRepositoryImpl(private val cartDataSource: CartDataSource) : CartRepos
                 }
             }.map {
                 if (it.payload?.first?.isEmpty() == false) return@map it
-                ResultWrapaddper.Empty(it.payload)
+                ResultWrapper.Empty(it.payload)
             }.onStart {
                 emit(ResultWrapper.Loading())
                 delay(2000)
