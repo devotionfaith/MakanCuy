@@ -9,8 +9,6 @@ import com.devotion.makancuy.data.datasource.category.CategoryApiDataSource
 import com.devotion.makancuy.data.datasource.category.CategoryDataSource
 import com.devotion.makancuy.data.datasource.menu.MenuApiDataSource
 import com.devotion.makancuy.data.datasource.menu.MenuDataSource
-import com.devotion.makancuy.data.datasource.user.UserDataSource
-import com.devotion.makancuy.data.datasource.user.UserDataSourceImpl
 import com.devotion.makancuy.data.datasource.userpref.UserPreferenceDataSource
 import com.devotion.makancuy.data.datasource.userpref.UserPreferenceDataSourceImpl
 import com.devotion.makancuy.data.repository.CartRepository
@@ -80,7 +78,6 @@ object AppModules {
             single<CartDataSource> { CartDatabaseDataSource(get()) }
             single<CategoryDataSource> { CategoryApiDataSource(get()) }
             single<MenuDataSource> { MenuApiDataSource(get()) }
-            single<UserDataSource> { UserDataSourceImpl(get()) }
             single<AuthDataSource> { FirebaseAuthDataSource(get()) }
             single<UserPreferenceDataSource> { UserPreferenceDataSourceImpl(get()) }
         }
